@@ -35,12 +35,19 @@ build-windows:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $FORCE_BUILD == "true"
   before_script:
-#    - choco install python --version=3.7.9 -y
-#    - $env:PATH+=";C:\Python37;C:\Python37\Scripts"
-#    - python -m pip install pipenv
-#    - pipenv update
+    - choco install python --version=3.7.9 -y
+    - $env:PATH+=";C:\Python37;C:\Python37\Scripts"
+    - python -m pip install pipenv
+    - choco install visualstudio2022buildtools -y
+    - choco install openssl -y
+    - pipenv update
     - $Env:PATH += ";C:\Users\vmware\AppData\Local\Programs\Python\Python38\Scripts\"
     - $Env:path
+    - pip install virtualenv
+    - virtualenv venv
+    - python --version
+    - pip install -r ./requirements_build.txt
+    - pip install -r ./src/requirements.txt
   script:
     - echo "Build Windows package - RELEASE_VERSION=$Env:RELEASE_VERSION"
     - $Env:WINDOWS_PACKAGE="VMware-NSX-Migration-for-VMware-Cloud-Director-$Env:RELEASE_VERSION.zip"
