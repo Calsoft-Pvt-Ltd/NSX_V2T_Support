@@ -3487,6 +3487,25 @@ class ConfigureEdgeGatewayServices(VCDMigrationValidation):
                         for ip in listify(
                                 vnics['addressGroups']['addressGroup']['secondaryAddresses']['ipAddress']):
                             vnicIpToTypeMap[ip] = vnics['type']
+                # Handle sub interfaces if this path exiest 'vnics.subInterfaces.subInterface.addressGroups.addressGroup'
+                elif 'subInterfaces' in vnics and 'subInterface' in vnics['subInterfaces']:
+                    sub_interface = vnics['subInterfaces']['subInterface']
+                    if 'addressGroups' in sub_interface:
+                        address_group = sub_interface['addressGroups']['addressGroup']
+                        # Handle primaryAddress if exiest
+                        if 'primaryAddress' in address_group:
+                            vnicIpToTypeMap[address_group['primaryAddress']] = vnics['type']
+                        # Handle secondaryAddresses if exiest, secondaryAddresses maybe (list/object)
+                        if address_group['secondaryAddresses']:
+                            # secondaryAddresses type is list: iterate over secondary IP addresses and add it to the map
+                            if isinstance(address_group['secondaryAddresses']['ipAddress'], list):
+                                # Iterate over secondary IP addresses
+                                for ip in address_group['secondaryAddresses']['ipAddress']:
+                                    # Map secondary IP addresses to VNIC type
+                                    vnicIpToTypeMap[ip] = vnics['type']
+                            # secondaryAddresses type is object: add it to the map
+                            else:
+                                vnicIpToTypeMap[address_group['secondaryAddresses']['ipAddress']] = vnics['type']
 
             extVirtualServerIP = list()
             for virtualServer in _virtualServersData:
