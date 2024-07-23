@@ -6325,10 +6325,12 @@ class VCloudDirectorOperations(ConfigureEdgeGatewayServices):
                     filteredVDCGroups = list(filter(lambda group: not any([
                         True if networkName in group['name'] else False for networkName in conflictingNetworksName]),
                                                     vdcGroups))
+                    logger.info("After Removing dc groups created for isolated networks"+filteredSharedVDCGroups)
 
                     # Finding filtered shared dc groups
                     filteredSharedVDCGroups = [dcGroup for dcGroup in filteredVDCGroups if
                                                len(dcGroup['participatingOrgVdcs']) == len(vcdObjList)]
+                    logger.info(filteredSharedVDCGroups)
 
                     for network in orgVdcNetworks:
                         if targetNetwork['name'] == network['name'] + '-v2t':
@@ -6337,9 +6339,11 @@ class VCloudDirectorOperations(ConfigureEdgeGatewayServices):
                                 dcGroupName = sourceOrgVDCName + '-Group-' + network['name']
                                 # If shared dc group id is present use that
                                 if filteredSharedVDCGroups:
+                                    logger.info("Filterd DCGroup" + filteredSharedVDCGroups)
                                     dcGroupId = filteredSharedVDCGroups[0]['id']
                                 # Else create a new shared dc group for this network
                                 else:
+                                    logger.info("Dc group is getting created for Shared Isolated Network with no Ip overlapping")
                                     dcGroupId = self.createDCgroup(dcGroupName, sharedGroup=True,
                                                                    orgVdcIdList=orgVDCIDList)
                                 ownerIds.update({targetNetwork['id']: dcGroupId})
