@@ -6175,6 +6175,10 @@ class VCloudDirectorOperations(ConfigureEdgeGatewayServices):
             if not conflictNetworks:
                 conflictNetworks = []
 
+            # Fetching name of all the conflicting networks
+            if conflictNetworks:
+                conflictingNetworksName = [network['name'] for network in conflictNetworks]
+
             # Fetch data center group id from metadata
             ownerIds = self.rollback.apiData.get('OrgVDCGroupID', {})
             # Check if DFW is configured on source org vdc id
@@ -6261,10 +6265,6 @@ class VCloudDirectorOperations(ConfigureEdgeGatewayServices):
             # Create datacenter groups if DFW is not configured but shared nws are present
             elif [network for network in orgVdcNetworks if network['shared']]:
                 logger.info('Org VDC group is getting created for shared networks')
-
-                # Fetching name of all the conflicting networks
-                if conflictNetworks:
-                    conflictingNetworksName = [network['name'] for network in conflictNetworks]
 
                 # Creating DC Group for routed shared networks
                 for targetNetwork in targetOrgVDCNetworks:
