@@ -1028,9 +1028,9 @@ class VCDMigrationValidation:
                     raise Exception("Failed to get Provider VDC details : {}".format(errorDict['message']))
 
             # iterating over all provider vdcs to find if the specified provider vdc details exists
-            for response in responseDict['values']:
+            for response in resultList:
                 if returnRaw:
-                    return responseDict['values']
+                    return resultList
                 if response['name'] == pvdcName:
                     logger.debug("Retrieved Provider VDC {} id successfully".format(pvdcName))
                     # returning provider vdc id of specified pvdcName & nsx-t manager
