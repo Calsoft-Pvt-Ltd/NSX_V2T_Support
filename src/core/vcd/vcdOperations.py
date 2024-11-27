@@ -2524,7 +2524,7 @@ class VCloudDirectorOperations(ConfigureEdgeGatewayServices):
                                 "description": targetStaticRoute["description"],
                                 "networkCidr": targetStaticRoute["networkCidr"],
                                 "nextHops": [
-                                    {   "ipAddress": targetStaticRoute["nextHops"][0]["ipAddress"],
+                                    {"ipAddress": targetStaticRoute["nextHops"][0]["ipAddress"],
                                         "adminDistance": targetStaticRoute["nextHops"][0]["adminDistance"],
                                         "scope": {
                                                     "name": sourceStaticRoute['interface'] + '-v2t',
