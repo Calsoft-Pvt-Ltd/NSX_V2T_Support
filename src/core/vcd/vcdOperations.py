@@ -2498,6 +2498,8 @@ class VCloudDirectorOperations(ConfigureEdgeGatewayServices):
     def setStaticRoutesScope(self, rollback=False):
         """
         Description :   Sets target edge gateway static routes scopes
+
+
         """
         if float(self.version) < float(vcdConstants.API_VERSION_BETELGEUSE_10_4):
             return
