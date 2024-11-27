@@ -3615,7 +3615,6 @@ class VCDMigrationValidation:
         """
         Description :   Gets the NAT Configuration details of the specified Edge Gateway
         Parameters  :   edgeGatewayId   -   Id of the Edge Gateway  (STRING)
-
         """
         try:
             errorList = list()
