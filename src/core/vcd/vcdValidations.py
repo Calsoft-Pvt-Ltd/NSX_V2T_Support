@@ -7466,7 +7466,6 @@ class VCDMigrationValidation:
         headers = {'X-VMWARE-VCLOUD-TENANT-CONTEXT': orgId,
                    'Authorization': self.bearerToken, 'Accept': vcdConstants.VCD_API_HEADER}
         response = self.restClientObj.get(url, headers)
-        logger.info(headers)
         if response.status_code == requests.codes.ok:
             responsedata = response.json()
             sharedNetworkList = list()
@@ -7482,7 +7481,6 @@ class VCDMigrationValidation:
                 sharedVDC = set()
                 vAppList = self.getVappUsingSharedNetwork([network], orgId)
                 orgVdcvApplist, orgVdcNameList = self.getOrgVdcOfvApp(vAppList, orgId)
-
                 if not network.get('orgVdc'):
                     continue
                 sharedVDC.add(network['orgVdc']['name'])
