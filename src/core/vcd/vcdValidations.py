@@ -3620,7 +3620,8 @@ class VCDMigrationValidation:
             errorList = list()
             natConfigDict = {
                 'Nat64 rule': [],
-                'Range of IPs or network found in DNAT rule': []
+                'Range of IPs or network found in DNAT rule': [],
+                'Invalid IP present in SNAT rule': []
             }
             logger.debug("Getting NAT Services Configuration Details of Source Edge Gateway")
             # url to retrieve the nat config details of the specified edge gateway
@@ -3649,6 +3650,14 @@ class VCDMigrationValidation:
                                 'Range of IPs or network found in this DNAT rule {} and range cannot be used in target edge gateway\n'.format(
                                     natrule['ruleId']))
                             natConfigDict['Range of IPs or network found in DNAT rule'].append(natrule['ruleId'])
+                        if natrule['action'] == "snat" and "/" in natrule['originalAddress']:
+                            originalIP = natrule['originalAddress']
+                            ip_part, mask = originalIP.split('/')
+                            # Check if the IP is a network address
+                            network = ipaddress.ip_network(originalIP, strict=False)
+                            if ip_part != str(network.network_address):
+                                errorList.append("Invalid IP present in SNAT rule {} ".format(natrule['ruleId']))
+                                natConfigDict['Invalid IP present in SNAT rule'].append(natrule['ruleId'])
                     return errorList, natrules, natConfigDict
                 else:
                     return errorList, False, natConfigDict
