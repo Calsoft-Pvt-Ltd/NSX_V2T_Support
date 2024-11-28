@@ -7490,6 +7490,8 @@ class VCDMigrationValidation:
                 sharedVDC = set()
                 vAppList = self.getVappUsingSharedNetwork([network], orgId)
                 orgVdcvApplist, orgVdcNameList = self.getOrgVdcOfvApp(vAppList, orgId)
+                if not network.get('orgVdc'):
+                    continue
                 sharedVDC.add(network['orgVdc']['name'])
                 for value in orgVdcNameList:
                     sharedVDC.add(value)
@@ -7501,6 +7503,8 @@ class VCDMigrationValidation:
                     orgVdcToBeMigratedTogether.append(sharedVDC)
                 if network in NonServiceDirectSharedNetworkList:
                     sharedVDC1 = set()
+                    if not network.get('orgVdc'):
+                        continue
                     sharedVDC1.add(network['orgVdc']['name'])
                     for value in orgVdcNameList:
                         sharedVDC1.add(value)
