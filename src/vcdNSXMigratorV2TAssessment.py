@@ -66,6 +66,7 @@ EDGE_GW_SERVICES_VALIDATIONS = {
     'Gateway Firewall: Unsupported grouping object': 1,
     'NAT: NAT64 rule': 2,
     'NAT: Range of IPs or network in DNAT rule': 1,
+    'NAT: Range of ports in original/translated port in DNAT': 1,
     'IPsec: Route based session type': 2,
     'IPsec: Unsupported Encryption Algorithm': 1,
     'IPsec: DNAT rules not supported with Policy-based session type': 1,
@@ -700,6 +701,8 @@ class VMwareCloudDirectorNSXMigratorV2T:
                                                 orgVDCResult["NAT: NAT64 rule"] = True
                                             if "Range of IPs or network found in DNAT rule" in result:
                                                 orgVDCResult["NAT: Range of IPs or network in DNAT rule"] = True
+                                            if "Range of ports in original/translated port in DNAT" in result:
+                                                orgVDCResult["NAT: Range of ports in original/translated port in DNAT"] = True
                                         if serviceName == "IPsec":
                                             if "routebased session type" in result:
                                                 orgVDCResult["IPsec: Route based session type"] = True

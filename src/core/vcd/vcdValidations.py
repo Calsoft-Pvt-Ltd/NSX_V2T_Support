@@ -3658,6 +3658,10 @@ class VCDMigrationValidation:
                             if ip_part != str(network.network_address):
                                 errorList.append("Invalid IP present in SNAT rule {} ".format(natrule['ruleId']))
                                 natConfigDict['Invalid IP present in SNAT rule'].append(natrule['ruleId'])
+                        if '-' in natrule['originalPort'] or '-' in natrule['translatedPort']:
+                            errorList.append(
+                                'Range of ports in original/translated port in DNAT rule {} is unsupported on NSX-T\n'.format(
+                                    natrule['ruleId']))
                     return errorList, natrules, natConfigDict
                 else:
                     return errorList, False, natConfigDict
